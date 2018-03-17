@@ -1,0 +1,21 @@
+{
+  "name": "studentradio/sra-award-winners",
+  "description": "A Wordpress Plugin for the Student Radio Association which helps manage the history of Award Winners for the SRAs",
+  "require": {
+	"yahnis-elsts/plugin-update-checker": "^4.2",
+	"jjgrainger/posttypes": "^1.1",
+	"rilwis/meta-box": "^4.12"
+  },
+  "license": "MIT",
+  "authors": [
+	{
+	  "name": "Fred Bradley",
+	  "email": "hello@fredbradley.co.uk"
+	}
+  ],
+  "autoload": {
+	"psr-4": {
+	  "StudentRadio\\AwardWinners\\": "src"
+	}
+  }
+}
