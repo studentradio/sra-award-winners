@@ -10,11 +10,6 @@ namespace StudentRadio\AwardWinners;
 
 use PostTypes\PostType;
 
-/**
- * Class CustomPostType
- *
- * @package FredBradley\CranleighCulturePlugin
- */
 class CustomPostType {
 
 	/**

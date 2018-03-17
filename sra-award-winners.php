@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Cranleigh Alumni Plugin
-Plugin URI: https://www.cranleigh.org
-Description: Cranleigh Alumni Plugin
+Plugin Name: SRA Award Winners
+Plugin URI: https://www.studentradio.org.uk
+Description: For Award WInners
 Version: 1.0
 Author: fredbradley
-Author URI: https://www.cranleigh.org
-License: GPL2
+Author URI: https://www.fredbradley.uk
+License: MIT
 */
 
 namespace StudentRadio\AwardWinners;

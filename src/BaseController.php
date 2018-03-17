@@ -4,11 +4,6 @@ namespace StudentRadio\AwardWinners;
 
 use Puc_v4_Factory;
 
-/**
- * Class BaseController
- *
- * @package FredBradley\CranleighCulturePlugin
- */
 abstract class BaseController {
 
 	/**

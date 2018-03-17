@@ -1,11 +1,7 @@
 <?php
 
 namespace StudentRadio\AwardWinners;
-/**
- * Class Plugin
- *
- * @package FredBradley\CranleighCulturePlugin
- */
+
 class Plugin extends BaseController {
 
 	/**
@@ -18,7 +14,7 @@ class Plugin extends BaseController {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->runUpdateChecker( 'cranleigh-alumni-plugin' );
+		$this->runUpdateChecker( 'sra-award-winners' );
 		add_filter('single_template', array($this, 'limit_access'));
 	}
 
@@ -43,7 +39,7 @@ class Plugin extends BaseController {
 		// TODO: Implement setupPlugin() method.
 
 		// TODO: Custom Post Type
-		$this->createCustomPostType("Alumni")->register();
+		$this->createCustomPostType("sra-winners")->register();
 	}
 
 	/**

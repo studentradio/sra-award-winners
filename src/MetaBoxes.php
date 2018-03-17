@@ -8,12 +8,6 @@
 
 namespace StudentRadio\AwardWinners;
 
-/**
- * Class MetaBoxes
- *
- * @package FredBradley\CranleighAlumniPlugin
- */
-
 class MetaBoxes
 {
 
