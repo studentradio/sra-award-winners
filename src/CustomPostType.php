@@ -28,7 +28,7 @@ class CustomPostType {
 	private $supports = [
 		"thumbnail",
 		"title",
-		"editor",
+
 	];
 
 	/**
@@ -37,16 +37,20 @@ class CustomPostType {
 	private $options = [
 		"menu_position" => 27,
 		"menu_icon"     => "dashicons-visibility",
-		"label" => "Alumni",
-		"has_archive" => true
+		"label" => "Winner",
+		"has_archive" => false
 	];
 
 	/**
 	 * @var array
 	 */
 	public $labels = [
-		"name" => "Alumni",
-
+		"name" => "Winner",
+		"menu_name" => "Award Winners",
+		"add_new_item" => "New Award Winner",
+		"add_new" => "New Winner",
+		"view_items" => "All Winners",
+		"all_items" => "All Winners"
 	];
 
 
@@ -111,7 +115,9 @@ class CustomPostType {
 	 */
 	private function setTaxonomies() {
 
-		$this->post_type->taxonomy( 'alumni-tag' );
+		$this->post_type->taxonomy( 'award-year' );
+		$this->post_type->taxonomy( 'award-category' );
+		$this->post_type->taxonomy( 'award-station' );
 
 	}
 

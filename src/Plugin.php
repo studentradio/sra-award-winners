@@ -15,23 +15,9 @@ class Plugin extends BaseController {
 	public function __construct() {
 		parent::__construct();
 		$this->runUpdateChecker( 'sra-award-winners' );
-		add_filter('single_template', array($this, 'limit_access'));
 	}
 
-	/**
-	 * @param $thing
-	 *
-	 * @return mixed
-	 */
-	public function limit_access($thing) {
 
-		if (get_current_user_id() !== 1 && get_post_type() == "alumni") {
-			wp_redirect("https://www.google.co.uk/search?q=".urlencode(get_the_title()));
-			exit();
-		} else {
-			return $thing;
-		}
-	}
 	/**
 	 *
 	 */
@@ -39,7 +25,7 @@ class Plugin extends BaseController {
 		// TODO: Implement setupPlugin() method.
 
 		// TODO: Custom Post Type
-		$this->createCustomPostType("sra-winners")->register();
+		$this->createCustomPostType("sra-award-winner")->register();
 	}
 
 	/**
