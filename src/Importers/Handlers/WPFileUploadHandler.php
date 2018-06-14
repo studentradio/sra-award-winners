@@ -13,7 +13,24 @@ class WPFileUploadHandler {
 	public $attachment_id = null;
 	public $attachment = null;
 	public $parent_post = null;
+	public $file_path = null;
 
+	public static function getUploadFolder(int $post_id, $type='path') {
+		$upload_dir   = wp_upload_dir();
+
+		if ( ! empty( $upload_dir['basedir'] ) ) {
+			$winner_upload_dir = $upload_dir['basedir'].'/award_winners/post_'.$post_id;
+			if ( ! file_exists( $winner_upload_dir ) ) {
+				wp_mkdir_p( $winner_upload_dir );
+			}
+		}
+
+		if ($type==='uri') {
+			return	str_replace($upload_dir['basedir'], "", trailingslashit( $winner_upload_dir ));
+		}
+
+		return trailingslashit( $winner_upload_dir );
+	}
 	/**
 	 * WPFileUploadHandler constructor.
 	 *
@@ -29,7 +46,8 @@ class WPFileUploadHandler {
 		$this->setParentPost( $parent_post_id );
 		$this->init();
 		$this->setAttachmentType( $attachment_type );
-		$this->upload_attachment( $url, $desc, $attachment_type );
+		//$this->upload_attachment( $url, $desc, $attachment_type );
+		$this->save_file( $url );
 	}
 
 	/**
@@ -66,7 +84,62 @@ class WPFileUploadHandler {
 		$this->attachment_type = $attachmentType;
 
 	}
+	public static function test_Upload_elsewhere( string $url ) {
+		$upload_location = self::getUploadFolder(1234);
+		$tmp = download_url($url);
+		$file_array = array();
+		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png|pdf|mp3)/i', $url, $matches );
 
+		$file_array['name'] = basename($matches[0]);
+		$file_array['tmp_name'] = $tmp;
+
+		file_put_contents($upload_location.$file_array['name'], file_get_contents($file_array['tmp_name']));
+		echo "tried to put the file: ".$file_array['name'];
+		echo "<br /><br />";
+		var_dump($file_array['tmp_name']);
+		die(ABSPATH);
+	}
+
+	private function file_exists($dir, $url) {
+		$file_name = basename($url);
+		if (file_exists($dir.$file_name)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
+	 * @param string      $url
+	 * @param bool        $overwrite
+	 *
+	 * @throws \Exception
+	 */
+	public function save_file( string $url, bool $overwrite=false) {
+		$winner_post_id = $this->parent_post->ID;
+		$upload_location = $this->getUploadFolder($winner_post_id);
+
+		if ($this->file_exists($upload_location, $url) && $overwrite===false) {
+			$this->file_path = $this->getUploadFolder($winner_post_id, "uri").basename($url);
+			return $this->file_path;
+		}
+
+		$file = download_url( $url );
+
+		if (is_wp_error( $file )) {
+			throw new \Exception("Download failed", 400);
+		}
+
+		preg_match( '/[^\?]+\.(jpg|jpe|jpeg|gif|png|pdf|mp3)/i', $url, $matches );
+
+		$file_array['name'] = basename($matches[0]);
+		$file_array['tmp_name'] = $file;
+
+		file_put_contents($upload_location.$file_array['name'], file_get_contents($file_array['tmp_name']));
+
+		$this->file_path = $this->getUploadFolder($winner_post_id, "uri").$file_array['name'];
+		return $this->file_path;
+
+	}
 	/**
 	 * @param string $url
 	 * @param string $desc

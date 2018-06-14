@@ -53,6 +53,10 @@ class CustomPostType {
 		"all_items" => "All Winners"
 	];
 
+	public function __toString() {
+		// TODO: Implement __toString() method.
+		return $this->post_type_key;
+	}
 
 	/**
 	 * CustomPostType constructor.
