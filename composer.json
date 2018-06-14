@@ -4,7 +4,8 @@
   "require": {
 	"yahnis-elsts/plugin-update-checker": "^4.2",
 	"jjgrainger/posttypes": "^1.1",
-	"rilwis/meta-box": "^4.12"
+	"rilwis/meta-box": "^4.12",
+    "guzzlehttp/guzzle": "^6.3"
   },
   "license": "MIT",
   "authors": [
