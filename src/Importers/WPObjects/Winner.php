@@ -77,21 +77,32 @@ class Winner {
 		return false;
 	}
 	private function uploadAttachments() {
-		if (NULL !== $this->pdf) {
-			// Upload PDF
-			if (!get_post_meta($this->post_id, "sra_winner_pdf-entry", true)) {
+		try {
+
+			if ( null !== $this->pdf ) {
+				// Upload PDF
+
 				$pdf = new WPFileUploadHandler( $this->pdf, $this->title . " PDF Entry", $this->post_id, "pdf" );
-				update_post_meta( $this->post_id, "sra_winner_pdf-entry", $pdf->attachment->ID );
+				update_post_meta( $this->post_id, "sra_winner_pdf-entry", $pdf->file_path );
+
 			}
-		}
-		if (NULL !== $this->audio) {
-			// Upload Audio
-			if (!get_post_meta($this->post_id, "sra_winner_audio-entry", true)) {
-				$audio = new WPFileUploadHandler( $this->audio, $this->title . " Audio Entry", $this->post_id,
-					"audio" );
-				update_post_meta( $this->post_id, "sra_winner_audio-entry", $audio->attachment->ID );
+			if ( null !== $this->audio ) {
+				// Upload Audio
+
+				$audio = new WPFileUploadHandler( $this->audio, $this->title . " Audio Entry", $this->post_id, "audio" );
+				update_post_meta( $this->post_id, "sra_winner_audio-entry", $audio->file_path );
+
 			}
+			if(isset($audio->file_path)) {
+				echo "<br />FOUND FILE: ".$audio->file_path."<br />";
+			}
+			if (isset($pdf->file_path)) {
+				echo "<br />FOUND FILE: ".$pdf->file_path."<br />";
+			}
+		} catch (\Exception $e) {
+			throw new \Exception($e->getMessage(), $e->getCode());
 		}
+		/*
 		foreach ($this->images as $image) {
 			if (NULL !== $image) {
 				// Upload Image
@@ -100,7 +111,7 @@ class Winner {
 					set_post_thumbnail( $this->post_id, $image->attachment->ID );
 				}
 			}
-		}
+		}*/
 
 	}
 	public function create(\StudentRadio\AwardWinners\Importers\ApiObjects\Winner $array, int $year) {
@@ -125,8 +136,9 @@ class Winner {
 			} else {
 				$this->post_id = wp_insert_post( $post_data, true );
 			}
+			echo 'GOT HERE';
 			$this->uploadAttachments();
-
+			echo 'GO THERE TOO';
 			update_post_meta($this->post_id, "sra_winner_prize", $this->prize);
 			update_post_meta($this->post_id, "sra_winner_written-entry", $this->written);
 			$this->setYearTaxonomy($this->post_id, $year);

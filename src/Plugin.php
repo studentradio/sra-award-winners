@@ -19,7 +19,7 @@ class Plugin extends BaseController {
 		parent::__construct();
 		$this->runUpdateChecker( 'sra-award-winners' );
 		add_action( 'admin_menu', array($this,'register_my_custom_menu_page') );
-
+		add_action( 'post_updated', array($this,'on_delete_winner'), 10, 3 );
 	}
 
 	public function register_my_custom_menu_page() {
@@ -39,8 +39,7 @@ class Plugin extends BaseController {
 			AwardsOneImporter::setYear($_POST['year'])->getWinners()->import();
 			echo 'Ran';
 		}
-
-
+error_log("test error logger");
 		?>
 		<div class="wrap">
 			<h2>Import Winners from an API</h2>
@@ -54,6 +53,31 @@ class Plugin extends BaseController {
 <?php
 
 
+	}
+
+	public function on_delete_winner( $post_ID, $post_after, $post_before ){
+		// We check if the global post type isn't ours and just return
+		if ($post_after->post_type !== (string) $this->post_type) return;
+
+		if ($post_after->post_status == "trash") {
+
+			try {
+				// My custom stuff for deleting my custom post type here
+				$upload_folder = WPFileUploadHandler::getUploadFolder( $post_ID );
+				array_map( 'unlink', glob( $upload_folder . "/*.*" ) );
+				rmdir( $upload_folder );
+
+				return true;
+
+			} catch ( \Exception $e ) {
+				throw new \Exception( $e->getMessage(), $e->getCode() );
+
+				return false;
+			}
+		}
+		if ($post_before->post_status == "trash") {
+			// TODO: write Restore method (can base it on the year taxonomy and reimport the entire year)?
+		}
 	}
 
 	/**

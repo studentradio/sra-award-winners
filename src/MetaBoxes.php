@@ -99,16 +99,16 @@ class MetaBoxes
 	        	array(
 	        		"name" => __("Audio", "sra"),
 			        "id" => $this->fieldID("audio-entry"),
-			        "type" => "file_advanced",
-			        "max_file_uploads" => 1,
-			        "mime_type" => "audio/mpeg"
+			        "type" => "text",
+			        //"max_file_uploads" => 1,
+			        //"mime_type" => "audio/mpeg"
 		        ),
 		        array(
 		        	"name" => __("PDF Entry", "sra"),
 			        "id" => $this->fieldID("pdf-entry"),
-			        "type" => "file_advanced",
-			        "max_file_uploads" => 1,
-			        "mime_type" => "application/pdf"
+			        "type" => "text",
+			        //"max_file_uploads" => 1,
+			        //"mime_type" => "application/pdf"
 		        ),
 		        array(
 		        	"name" => __("Written Entry", "sra"),
