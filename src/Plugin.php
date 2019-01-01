@@ -67,7 +67,8 @@ class Plugin extends BaseController
     {
 
         if ($_POST && isset($_POST['year']) && $this->validateForm($_POST['year']) === true) {
-            ini_set('max_execution_time', 1800);
+            set_time_limit(0);
+		ini_set('max_execution_time', 1800);
             AwardsOneImporter::setYear($_POST['year'])->getWinners()->import();
             echo 'Ran';
         }
