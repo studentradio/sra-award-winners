@@ -56,7 +56,6 @@ class CustomPostType
 
     public function __toString()
     {
-        // TODO: Implement __toString() method.
         return $this->post_type_key;
     }
 
