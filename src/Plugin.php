@@ -14,6 +14,13 @@
 	{
 		const PLUGIN_NAME = 'sra-award-winners';
 		CONST POST_TYPE_KEY = 'sra-award-winner';
+
+		public static $prizes = [
+			'Bronze',
+			'Silver',
+			'Gold'
+		];
+
 		/**
 		 * @var
 		 */
@@ -27,11 +34,23 @@
 			parent::__construct();
 			$this->runUpdateChecker(self::PLUGIN_NAME);
 			if (is_admin()) {
-				add_action('admin_menu', [new Admin(), 'register_my_custom_menu_page']);
+				new Admin();
 			}
 			add_action('post_updated', [$this, 'on_delete_winner'], 10, 3);
 		}
 
+		public static function getPrizesArray(bool $null = true): array
+		{
+			$return = [];
+			if ($null === true) {
+				$return[ NULL ] = "Please Select";
+			}
+			foreach (self::$prizes as $prize) {
+				$return[ $prize ] = $prize . " Prize";
+			}
+
+			return $return;
+		}
 
 		/**
 		 * @param $post_ID

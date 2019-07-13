@@ -14,19 +14,13 @@ class MetaBoxes
 	/**
 	 * @var string
 	 */
-	public $prefix = "sra_winner_";
+	CONST PREFIX = "sra_winner_";
 
 	/**
 	 * @var array|string
 	 */
 	private $post_types;
 
-	private $prizes = [
-		null => "Please Select",
-		"Bronze" => "Bronze",
-		"Silver" => "Silver",
-		"Gold" => "Gold"
-	];
 	/**
 	 * MetaBoxes constructor.
 	 *
@@ -45,7 +39,7 @@ class MetaBoxes
 	 * @return string
 	 */
 	private function fieldID(string $id) {
-    	return $this->prefix.$id;
+    	return self::PREFIX.$id;
 	}
 
 
@@ -70,7 +64,8 @@ class MetaBoxes
                     "type" => "select",
                     "desc" => "Bronze, Silver or Gold",
 	                "placeholder" => "",
-	                "options" => $this->prizes
+	                "options" => Plugin::getPrizesArray()
+
                 )
             ),
             'validation' => array(
