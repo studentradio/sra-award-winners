@@ -1,59 +1,86 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fredbradley
- * Date: 14/06/2018
- * Time: 10:25
- */
 
-namespace StudentRadio\AwardWinners\Importers;
+	namespace StudentRadio\AwardWinners\Importers;
 
 
-use GuzzleHttp\Client;
-use StudentRadio\AwardWinners\Importers\ApiObjects\Category;
+	use GuzzleHttp\Client;
+	use StudentRadio\AwardWinners\Importers\ApiObjects\Category;
 
-class AwardsOneImporter extends BaseImporter {
-
-	public $year;
-	public $apiBase = "http://api.studentradioawards.co.uk/";
-	public $endpoint;
-	public $categories;
-	private $client;
-	public function init()
+	/**
+	 * Class AwardsOneImporter
+	 *
+	 * This importer is developed to go with Fred Bradley's Version 1 Awards System ("AwardsOne").
+	 *
+	 * It is recommended to have a different importer child class (that extends BaseImporter) for each
+	 * Awards Platform that is needed, rather than to shoehorn all functionality into one importer.
+	 *
+	 * @package StudentRadio\AwardWinners\Importers
+	 */
+	class AwardsOneImporter extends BaseImporter
 	{
-		$client = new Client([
-			// Base URI is used with relative requests
-			'base_uri' => $this->apiBase,
-			// You can set any number of default request options.
-			'timeout'  => 2.0,
-		]);
 
-		$this->client = $client;
+		/**
+		 * @var string
+		 */
+		public $apiBase = "http://api.studentradioawards.co.uk/";
+		/**
+		 * @var
+		 */
+		public $endpoint;
+		/**
+		 * @var
+		 */
+		private $client;
 
-	}
+		/**
+		 *
+		 */
+		public function init()
+		{
+			$client = new Client([
+				// Base URI is used with relative requests
+				'base_uri' => $this->apiBase,
+				// You can set any number of default request options.
+				'timeout'  => 2.0,
+			]);
 
-	public function getWinners() {
-		$this->endpoint = "winners/".$this->year;
+			$this->client = $client;
 
-		$this->response = $this->client->request('GET', $this->endpoint);
-		$this->code = $this->response->getStatusCode(); // 200
-		$this->response = json_decode($this->response->getBody()->getContents());
-		$this->response = $this->mapWinnersResponse($this->response);
-		unset($this->client);
-		unset($this->response);
-
-		return self::instance();
-	}
-	public function mapWinnersResponse(\stdClass $response) {
-		$result = $response->result;
-		$categories = [];
-
-		foreach ($result as $category ) {
-			$categories[$category->Cat_Name] = new Category($category);
 		}
-		$this->categories = $categories;
 
-		return $response;
+		/**
+		 * @return \StudentRadio\AwardWinners\Importers\AwardsOneImporter
+		 */
+		public function getWinners()
+		{
+			$this->endpoint = "winners/" . $this->year;
+
+			$this->response = $this->client->request('GET', $this->endpoint);
+			$this->code = $this->response->getStatusCode(); // 200
+			$this->response = json_decode($this->response->getBody()->getContents());
+			$this->response = $this->mapWinnersResponse($this->response);
+			unset($this->client);
+			unset($this->response);
+
+			return self::instance();
+		}
+
+		/**
+		 * @param \stdClass $response
+		 *
+		 * @return \stdClass
+		 */
+		public function mapWinnersResponse(\stdClass $response)
+		{
+			$result = $response->result;
+			$categories = [];
+
+			foreach ($result as $category) {
+				$categories[ $category->Cat_Name ] = new Category($category);
+			}
+			$this->categories = $categories;
+
+			return $response;
+		}
+
 	}
-
-}
