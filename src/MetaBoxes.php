@@ -99,21 +99,22 @@ class MetaBoxes
 	        	array(
 	        		"name" => __("Audio", "sra"),
 			        "id" => $this->fieldID("audio-entry"),
-			        "type" => "text",
-			        //"max_file_uploads" => 1,
-			        //"mime_type" => "audio/mpeg"
+			        "type" => "file_input",
 		        ),
 		        array(
 		        	"name" => __("PDF Entry", "sra"),
 			        "id" => $this->fieldID("pdf-entry"),
-			        "type" => "text",
-			        //"max_file_uploads" => 1,
-			        //"mime_type" => "application/pdf"
+			        "type" => "file_input",
 		        ),
 		        array(
 		        	"name" => __("Written Entry", "sra"),
 			        "id" => $this->fieldID("written-entry"),
-			        "type" => "textarea",
+			        "type" => "wysiwyg",
+					"options" => array(
+						"teeny" => true,
+						'textarea_rows' => 10,
+						'media_buttons' => false
+					)
 		        )
 	        )
         );
